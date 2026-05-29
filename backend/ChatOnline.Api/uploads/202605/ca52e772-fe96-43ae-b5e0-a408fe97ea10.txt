@@ -1,0 +1,61 @@
+export PATH=/usr/local/cuda-11.8/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-11.8/lib64:$LD_LIBRARY_PATH
+
+你电脑关机后，只需执行**2步核心命令**就能重新启动 TradingAgents-CN 项目，整个过程不到1分钟，我会把操作步骤、验证方法和注意事项都讲清楚：
+
+### 一、重启项目的完整步骤（关机后执行）
+#### 步骤1：进入项目目录（必做）
+首先打开终端，切换到你部署项目的目录：
+```bash
+cd ~/work/tradingagents-demo/
+```
+
+#### 步骤2：启动所有服务（核心命令）
+用和之前一致的 `docker compose` 命令启动服务（后台运行）：
+```bash
+docker compose -f docker-compose.hub.nginx.yml up -d
+```
+- 命令说明：
+  - `-d`：后台运行容器，不占用终端；
+  - 这个命令会自动检查容器状态，启动所有关联的服务（前端/后端/数据库/Redis/Nginx）。
+
+#### 步骤3：验证服务是否启动成功（可选，但建议做）
+```bash
+# 查看容器状态，所有容器应显示「Up」
+docker compose -f docker-compose.hub.nginx.yml ps
+```
+✅ 成功的状态示例：
+```
+NAME                               STATUS         PORTS
+tradingagents-frontend-1           Up (healthy)   0.0.0.0:80->80/tcp
+tradingagents-backend-1            Up (healthy)   8000/tcp
+tradingagents-mongo-1              Up (healthy)   27017/tcp
+tradingagents-redis-1              Up (healthy)   6379/tcp
+tradingagents-nginx-1              Up (healthy)   80/tcp
+```
+
+#### 步骤4：访问系统（和之前一样）
+打开浏览器，访问 `http://你的服务器IP`（比如 `http://192.168.1.100`），用 `admin/admin123` 登录即可。
+
+### 二、关键注意事项
+1. **数据不会丢失**：
+   - MongoDB/Redis 的数据存在 Docker 数据卷中（`/var/lib/docker/volumes/`），关机/重启容器都不会丢失；
+   - 你的 `.env` 配置文件（含 API Key）在 `~/work/tradingagents-demo/` 目录下，只要不删除这个目录，配置就不会丢。
+
+2. **如果启动失败（罕见）**：
+   - 先检查 Docker 服务是否启动：`sudo systemctl status docker`；
+   - 如果 Docker 没启动，先启动 Docker：`sudo systemctl start docker`，再执行步骤2。
+
+3. **一键停止项目（如需）**：
+   如果想临时停止项目（不删除数据），执行：
+   ```bash
+   docker compose -f docker-compose.hub.nginx.yml down
+   ```
+   再次启动时仍用步骤2的 `up -d` 命令即可。
+
+### 总结
+1. 核心操作：关机后只需进入项目目录 → 执行 `docker compose -f docker-compose.hub.nginx.yml up -d` 即可重启；
+2. 数据保障：Docker 数据卷和项目配置文件会持久化保存，无需重新初始化；
+3. 验证方法：用 `docker compose ps` 检查容器状态，显示「Up」即为启动成功。
+
+整个重启过程无需重新拉取镜像、初始化账号，直接启动就能恢复到关机前的状态，非常方便。如果启动时遇到任何报错，把日志贴出来我帮你快速解决。

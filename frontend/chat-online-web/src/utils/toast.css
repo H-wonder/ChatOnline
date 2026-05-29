@@ -1,0 +1,15 @@
+.toast-container { position:fixed; top:24px; left:50%; transform:translateX(-50%); z-index:9999; display:flex; flex-direction:column; gap:8px; pointer-events:none; }
+.toast { padding:12px 24px; border-radius:10px; font-size:13px; font-weight:500; color:#fff; opacity:0; transform:translateY(-10px); transition:opacity .25s,transform .25s; pointer-events:auto; max-width:360px; text-align:center; }
+.toast.in { opacity:1; transform:translateY(0); }
+.toast-success { background:#10b981; }
+.toast-error { background:#ef4444; }
+.toast-warning { background:#f59e0b; }
+.toast-info { background:#6366f1; }
+.confirm-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; z-index:9998; opacity:0; transition:opacity .2s; backdrop-filter:blur(4px); }
+.confirm-overlay.in { opacity:1; }
+.confirm-box { background:#1a1a20; border:1px solid #27272a; border-radius:14px; padding:28px; width:380px; max-width:90vw; }
+.confirm-box h3 { margin:0 0 8px; color:#fff; font-size:17px; }
+.confirm-box p { margin:0 0 20px; color:#a1a1aa; font-size:14px; }
+.confirm-btns { display:flex; gap:10px; justify-content:flex-end; }
+.confirm-cancel { padding:8px 20px; background:transparent; color:#a1a1aa; border:1px solid #3f3f46; border-radius:8px; cursor:pointer; font-size:13px; }
+.confirm-ok { padding:8px 20px; background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; }

@@ -1,0 +1,21 @@
+# .NET build
+bin/
+obj/
+*.suo
+*.user
+.vs/
+
+# Node
+node_modules/
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+
+# Logs
+*.log
